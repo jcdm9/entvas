@@ -7,7 +7,7 @@ A full-stack web application with the following stack:
 - **Database**: MongoDB
 - **Containerized using Docker Compose**
 
-👉 [http://3.13.92.145:3000/](http://3.13.92.145:3000/)
+👉 Live Demo: [http://3.13.92.145:3000/](http://3.13.92.145:3000/)
 
 ---
 

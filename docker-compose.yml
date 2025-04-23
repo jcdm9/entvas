@@ -1,0 +1,57 @@
+version: "3.8"
+
+volumes:
+  server_nm:
+    driver: local
+  web_nm:
+    driver: local
+  mongodb-data:
+    driver: local
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: entvas
+      MONGO_INITDB_ROOT_PASSWORD: entvas122333
+    ports:
+      - "27017:27017"
+    networks:
+      - my-network
+    volumes:
+      - mongodb-data:/data/db
+    platform: linux/arm64
+
+  server:
+    build: ./server/
+    container_name: entvas_server
+    ports:
+      - "3009:3009"
+    volumes:
+      - "./server:/server"
+      - "server_nm:/server/node_modules"
+      - "./server/.env:/server/.env"
+    networks:
+      - my-network
+    command: ["sh", "-c", "npm run dev"]
+    platform: linux/arm64
+
+  web:
+    build: ./web/
+    container_name: entvas_web
+    ports:
+      - "3000:3000"
+    volumes:
+      - "./web:/web"
+      - "web_nm:/web/node_modules"
+      - "./web/.env:/web/.env"
+    networks:
+      - my-network
+    command: ["sh", "-c", "npm run build && npm run start"]
+    platform: linux/arm64
+
+networks:
+  my-network:
+    driver: bridge
